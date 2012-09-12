@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage{url}
+
+\begin{document}
+\section{Introduction}
+This document will outline the procedures we as Taarifans should follow when writing and committing to the Taarifa code-base. Currently this is specific to Djangorifa, but there is scope for all future, and current, versions of Taarifa. \\
+As version control, we are using git. As such the principles are for how we use git. \\
+If developing a plugin, develop in a separate repository, under the Taarifa banner, and still adhere to these principles. The guidelines for how to proceed are taken from a few sources, plus personal experience. Credit can be found at the back of this document. \\
+
+\section{Branches}
+For each repo, whether it be a plugin or the main repo, the branch structure is the same. \\
+There is an important distinction between public and private branches. Public branches are immutable and everything which happens on them must be tracked and logged at all times. This is for transparency, and to ensure that no confusion arises. For this reason, no rebasing can be performed on a public branch. This is to prevent the situation where a developer rebases, and another developer now has a messed up copy of everything. \\
+With this in mind, there are 3 public branches: \textbf{master}, \textbf{development} and \textbf{bugfix-*} - where the latter is really as many branches as needed, see Section~\ref{subsec:bugfix}.
+
+\section{Master Branch}
+This is so named by git convention. On this branch is production-ready code. This means the code is tested - there are no bugs that we know of - and people are comfortable to pull it onto servers. This will be the branch which contains the major version numbers. See Section~\ref{sec:versions} for more detail. This may also be thought of as the stable branch.
+
+\section{Development Branch}
+This is essentially where all development stems from. Any code submitted to this branch should also be tested, but because silly mistakes do happen, this branch exists because we don't want silly mistakes in production. Any private branch you have should be checked out from this. \\
+
+\section{Private Branches}
+These are made at the coder's discretion. They should be checked out from the development branch, and updated from that often. They should also be in existence for relavitely small periods of time. It's a hassle to fix merge conflicts, and therefore commits should be small and often (that way it's also easier to attribute blame). Developers are required / responsible to write their tests in these private branches. If they need help with this, people from the community are always happy to help. Decentralised testing takes the hassle out of everything. When commiting the changes back to the dev branch, rebase before committing. This is so unnecessary information doesn't get submitted. The dev branch doesn't care that there's a commit, but ``oh no!" the name of the function is slightly wrong, then there's another commit, and ``oops" a variable is badly named. See [1] for more discussion. \\
+The dev branch simply cares that there has been a new commit. If you simply merge, all this unnecessary information is committed with it. Instead of merging, you'll be doing:
+\begin{verbatim}
+git rebase development
+\end{verbatim}
+For cooler uses of rebase, see [3].
+
+\section{Bug-Fixes}
+\label{sec:bugfix}
+These are emergency branches which are created to fix problems with code on the master branch. They checkout from master, and push back to master also. This needs to be tested thoroughly, but in a hurry, and away from the dev branch.
+
+\section{Version Numbers}
+\label{sec:versions}
+This needs to be discussed more as a community, but I recommend using git tag, and a strategy very similar to [4].
+
+\section{Recommended Reading}
+1 \url{http://www.jillesvangurp.com/2011/07/16/using-git-and-feature-branches-effectively/} \\
+2 \url{http://sandofsky.com/blog/git-workflow.html} \\
+3 \url{http://git-scm.com/book/en/Git-Branching-Rebasing} \\
+4 \url{http://www.kudelabs.com/2011/12/22/tags-in-git-for-sane-version-numbers} \\
+\end{document}
